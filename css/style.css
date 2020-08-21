@@ -21,7 +21,7 @@ line-height: 1.1rem;text-align: center;position: absolute;right:-0.5rem;top:-0.5
 #login>div>div>div:first-child>img {margin:auto}
 #loginform {width:80%}
 
-
+.mb-f5 {margin-bottom:-5rem}
 
 
 @media screen and (max-width:992px){
