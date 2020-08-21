@@ -20,6 +20,13 @@ html,body {padding:0;margin:0}
 line-height: 1.1rem;text-align: center;position: absolute;right:-0.5rem;top:-0.5rem}
 #login>div>div>div:first-child>img {margin:auto}
 #loginform {width:80%}
+
+.index-black-img {width:100%;}
+.index-black-img>img {width:100%;border:1rem solid #000}
+
+
+
+
 @media screen and (max-width:992px){
     #mymenu {height:92vh;overflow-y:auto}    
     .global-search {width:100%}
