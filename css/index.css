@@ -1,0 +1,48 @@
+
+
+#setimgs {margin-top:7rem}
+#setimgs>.carousel-inner>.carousel-item>img { width:100%;}
+
+
+.index-write {width:100%}
+.index-black {width:100%;background-color:#1b1b1b}
+
+.index-title {width:100%;padding:1.5rem 0;font-family: "loraregular",sans-serif;}
+.index-title>span {display:inline-block;}
+.index-title>span:nth-child(2) {font-size:3rem;width:37%;text-align: center;}
+.index-title>span:nth-child(1) { height:1px; background-color:#999;width: 30%;line-height: 3rem;}
+.index-title>span:nth-child(3) { height:1px; background-color:#999;width: 30%;line-height: 3rem;}
+.index-title>span:nth-child(4) {width:100%;text-align: center;font-size:1.1rem;color:#840000;font-weight: bold;}
+.index-news>div:first-child {}
+.index-news img {width:100%}
+.index-news-mimg {}
+.index-news-mimg>div:first-child {width:100%;position: relative;}
+.index-news-mimg>div:first-child>span {display: inline-block;position: absolute;bottom:0px;font-size: 0.8rem;padding:0.2rem 0.5rem;
+    background-color:rgba(0,0,0,0.5);left:0;color:#fff}
+.index-news-mimg>div:nth-child(2) {font-size: 0.9rem;padding:0.5rem 0;}
+.index-news-mimg>div:nth-child(3)   {font-size: 0.7rem;color:#999}
+
+.btn-index {height:1.7rem;background:#000;width:12rem;margin:2rem auto;text-align: center;}
+.btn-index a {color:white;font-size: 0.9rem; line-height: 1.7rem;}
+
+
+
+.index-sliding-box>div {overflow: hidden;position: relative;}   
+.index-sliding {position: absolute;bottom:-4rem;background-color:rgba(0,0,0,0.5);color:#fff;
+    box-sizing: border-box;transition: bottom ease 0.2s;padding:1rem;}
+.index-sliding>div:first-child {font-size:1.2rem;box-sizing:border-box;padding:1rem;}
+.index-sliding>div:last-child {font-size:0.8rem;line-height: 1.5rem;width:100%;height:3rem; overflow: hidden;text-overflow:ellipsis;}
+.index-sliding-box:hover .index-sliding {bottom:0rem;transition: bottom ease 0.2s;}
+
+
+.index-events {width: 100%;position: relative;margin-top:1rem;}
+.index-events img{width:100%;}
+.index-events div {background-color: rgba(0,0,0,0.3);color:#fff;position: absolute;top:0;height:100%;width: 100%;
+font-size: 1.5rem;align-items:center;display: -webkit-flex;justify-content: center;}
+
+
+@media screen and (max-width:992px){
+    #setimgs {margin-top:2rem;}
+    .index-title>span:nth-child(2) {font-size: 1rem;}
+    .index-title>span:nth-child(4) {font-size:0.8rem;}
+}
