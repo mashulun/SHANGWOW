@@ -52,7 +52,7 @@ font-size: 1.5rem;align-items:center;display: -webkit-flex;justify-content: cent
 
 
 
-.index-footer-logo-img img {width: 100px;}
+.index-footer-logo-img img {width: 100px;   }
 
 @media screen and (max-width:992px){
     #setimgs {margin-top:2rem;}
