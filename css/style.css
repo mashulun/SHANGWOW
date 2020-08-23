@@ -4,7 +4,7 @@ html,body {padding:0;margin:0}
 .bg-black {background-color:#000;} 
 .text-write {color:#fff}
 .global-top {width:100%;}
-.band {cursor: pointer;}
+.band {cursor: default;}
 
 .global-first {width:100%}
 .global-first>div:first-child {width:100%;border-bottom:1px solid #999;overflow: hidden;}
@@ -20,14 +20,25 @@ html,body {padding:0;margin:0}
 line-height: 1.1rem;text-align: center;position: absolute;right:-0.5rem;top:-0.5rem}
 #login>div>div>div:first-child>img {margin:auto}
 #loginform {width:80%}
+.login-radio {width: 70%;overflow: hidden;margin:0 auto}
+.login-radio label {float:left;}
+.login-radio a {float:right;}
+
+
+.index-footer-logo-img img {width: 100px;   }
 
 .mb-f5 {margin-bottom:-5rem}
 
 
 @media screen and (max-width:992px){
-    #mymenu {height:92vh;overflow-y:auto}    
+    #mymenu {height:92vh;overflow-y:auto}   
+    .global-top {position: fixed;top:0;z-index:1000} 
     .global-search {width:100%}
     .global-first>div:first-child>div:nth-child(1) {display: none;}
     .global-first>div:first-child>div:nth-child(2) {clear:both;}
     .global-first>div:first-child>div:nth-child(3) {float:left;clear: both;}  
+    .index-footer-logo-img {width: 100%;display: block;text-align: center;}
+    .index-img1 {padding:0 4rem 1.5rem 4rem;background-color: #eee;box-sizing: border-box;}
+    .index-img1::before {content:"ADVERTISEMENT";font-size: 1rem;color: #ccc;display:block;width: 100%;text-align: center;height:2rem;
+    line-height: 2rem;}
 }

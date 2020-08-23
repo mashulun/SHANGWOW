@@ -1,0 +1,21 @@
+.register-body {
+  margin: 7rem auto;
+  background-color: #fff;
+  max-width: 40rem;
+  border-radius: 1rem;
+  box-shadow: 0.5rem 0.5rem 1rem #999;
+  padding-bottom: 3rem;
+}
+.register-body .row {
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+}
+.register-body .row div:first-child {
+  text-align: right;
+  box-sizing: border-box;
+  padding-right: 0.5rem;
+}
+.register-btn {
+  width: 100%;
+  padding: 1rem 0;
+}
