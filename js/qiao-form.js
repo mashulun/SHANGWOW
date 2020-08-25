@@ -4,10 +4,9 @@
 
 
 var formel = {
-    data:{
-
-    },
+   
     style:"",
+   
     create:function(obj){
     //obj 参数的格式
         /*{
