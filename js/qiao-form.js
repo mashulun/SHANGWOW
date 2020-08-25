@@ -5,27 +5,29 @@
 
 var formel = {
    
+    data:null,
+
     style:"",
+
+    alertEl:"",     //显示提示内容的元素
    
-    create:function(obj){
+    //绑定表单元素
+    bind:function(obj,alertEl=false){
     //obj 参数的格式
         /*{
             regular:正则表达式,
             msg:"判断结果的提示字符串"
             notNull:false,       //是否需要判断空   true 不能为空  false 可以为空
         }*/
+        var formel = this;  //获取当前对象
 
-        var notNull = true;
+        formel.alertEl = alertEl;
 
-        var msg = obj.msg;
-
-        var alertHtml =  `<div sytle="padding:0.5rem 1rem;background:red;border:0.1rem solid red;border-roudes:0.2rem;${this.style}">${msg}<div>`;    //提示框html代码
+        var msg = obj.msg;        
         
-        if(obj.notNull!=undefined){     //判断赋值可选内容
 
-            notNull = obj.notNull;
-        }
-
+        var regular = obj.regular;  //获取正则表达式
+        
         var regArr = [          //默认正则表达式条件组
             {
                 reg:/^\w{6,16}$/,
@@ -36,50 +38,113 @@ var formel = {
             }
         ];
 
-        var jquery = this;          //获取当前对象
-
-        var regular = obj.regular;  //获取正则表达式
+        start();
         
-        if(regular){               //判断增则表达式存在
+        //入口方法
+        function start(){
             
-            for(var index in regArr){               //遍历条件组
+            
+                //这里是异步事件
 
-                if(regArr[index].name==regular){    //匹配默认条件 匹配值name
-                    //匹配成功 按照条件组中的值进行比对
-                    testReg(regArr[index].regular);
-                }
+                if(isArray(obj)){//数据为数组时为多条数据同时导入
 
-            }
+                    jquery.blur(function(){   //表单元素失去焦点时触发事件
 
-        }else{                      //没有正则表达式
+                        for(var key in obj){    //遍历数组对象   获取单个元素对象
+        
+                            var res = parsingData(obj[key]);  //解析数据
+                            
+                            //对数据组进行打包  打包号的数据放在data里面
+
+                        }
+
+                     });    //获取表单元素中的参数
+
+    
+                }else if(isObject(obj)){//数据为对象时导入单条数据
+    
+                    var res = parsingData(obj);   //解析数据
+                    
+                }                                      
+
 
         }
+
+          //判断是否为数组
+        function isArray(obj) {
+            return obj instanceof Array;
+        }
+
+        //判断是否为对象
+        function isObject(obj) {
+            return obj instanceof Object;
+        }
+
+        //解析数据
+        function parsingData(data){
+            
+            var notNull = true;             //默认是不能为空的
+
+            if(data.notNull!=undefined){     //表单元素中的内容不能为空
+
+                notNull = data.notNull;
+            
+            }
+    
+
+            if(data.regular){               //判断增则表达式存在
+                
+                for(var index in regArr){               //遍历条件组
+    
+                    if(regArr[index].name==data.regular){    //匹配默认条件 匹配值name
+                        //匹配成功 按照条件组中的值进行比对
+                        return testReg(regArr[index].regular,notNull);
+                    }
+                }
+    
+            }else{                      //没有正则表达式
+                //直接判定为比对错误    给一个特殊提示
+                return false;
+            }
+        }
+
+
+      
 
         //参数比对正则表达式
-        function testReg(regular){
+        //返回表单元素值和比对状态
+        function testReg(regular,notNull){
 
-        var value = jquery.val();    //获取表单元素中的参数
+            var value = jquery.val();
+               
+            if(value){      //判断数据是否不为空
 
+            }else{
 
-        if(value){      //判断数据是否不为空
+                if(notNull){       //不允许为空
+                    
+                    if(value.length==0){  //数据为空
+                        //比对失败
+                        //在这里返回结果
+                        return "lack false";
+                    }
+                }else{      //允许为空
+                    if(value.length==0){ //数据为空 
+                        //比对成功
+                        //在这里返回结果
+                        return "lack true";
+                    }
+                }
 
-        }else{
-
-            if(notNull){       //不允许为空
-            
-                if(!value.length){  //数据为空
-                    showAlert('数据不能为空');
+                //判断数据是否规范
+                if(regular.test(value)){  //规范
+                    return true;
+                }else{  //不规范
                     return false;
                 }
-            }
-            //判断数据是否规范
-            if(regular.test(value)){  //规范
-
-            }else{  //不规范
 
             }
 
-        }
         }
 
         //显示提示框
@@ -96,106 +161,6 @@ var formel = {
 }
 
 
-
-var register = function register(){
-
-}
-
-var formAreaDataArr = [];       //表单数据
-
-var formAreaDataErrorLocation = false;      //公共提示信息的id
-
- //判断表单格式是否正确
-
-function formArea (arr,errorLocation=false){
-
-    formAreaDataArr = arr;
-    
-    formAreaDataErrorLocation = errorLocation;
-    
-    let i;
-
-    for(i=0;i<arr.length;i++){     //便利表单信息
-        
-        var errorMainLocation = "#"+ errorLocation;
-
-        inputFocus(arr[arr.length-i-1],errorMainLocation);  //监听表单元素
-       
-    }
-}
-
-
-//监听表单焦点事件
-function inputFocus(obj,errorMainLocation){
-    let id = "#"+obj.id;
-    $(id).focus(function(){ //聚焦事件
-
-        $(this).blur(function(){    //失去焦点事件
-
-         testText(obj,errorMainLocation);   //验证数据格式
-        })
-    })
-}
-
-//检测所有表单数据格式是否正确
-function testAll(){
-
-    for(i=0;i<formAreaDataArr.length;i++){  //便利表单信息
-     
-        var errorMainLocation = "#"+ formAreaDataErrorLocation;
-
-        testText(formAreaDataArr[formAreaDataArr.length-i-1],errorMainLocation);    //验证表达式
-       
-    }
-}
-
-//检测字符串格式是否正确
-function testText(obj,errorMainLocation){
-    let id = "#"+obj.id;
-
-    let data = $(id).val();     //获取表单元素中的数据
-
-    let reg = obj.regular;
-
-    if(!reg.test(data)){ //通过正则表达式验证数据正确性
-
-        if(obj.errorPath!=undefined){   //判断参数中是否携带提示文字展示位置
-            //不正确
-            $(obj.errorPath).text(obj.error);
-
-        }else if(errorMainLocation!="#false"){ //判断是否存在通用位置 有使用通用位置展示提示 否则不提示
-            
-            $(errorMainLocation).text(obj.error);
-
-        }else{//没有单项的 提示信息位置id和公共的提示信息位置参数是使用小弹窗提示信息
-
-            showWarn(obj.error,obj.id);
-
-        }  
-    }else{//内容格式正确时
-        showWarn(obj.error,obj.id,false);  
-    } 
-}
-
-//展示警告信息
-//参数
-// text    String  警告信息
-// location    String  选框id   带#的
-function showWarn(text,id,static=true){
-
-    let location = "#"+id;  //文本框id
-
-    if(static){     //增加提示框
-        var width = $(location).parent().outerWidth(); //获取文本框父元素宽度
-        //提示框html代码   
-        var html = "<span id='"+id+"addtoend' style='left:"+width+"px;z-index:999; position: absolute;padding:0.5rem 1rem;border-radius:0.5rem;border:0.2rem solid red;background: #fff;top:0;white-space:nowrap'>"+text+"</span>"
-
-        $(location).parent().append(html); //增加选框
-    }else{          //删除提示框
-        $(location+"addtoend").remove();
-    }
-
-}
 
 
 
