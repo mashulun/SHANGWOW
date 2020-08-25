@@ -3,6 +3,100 @@
 //project name qiao-register.js
 
 
+var formel = {
+    data:{
+
+    },
+    style:"",
+    create:function(obj){
+    //obj 参数的格式
+        /*{
+            regular:正则表达式,
+            msg:"判断结果的提示字符串"
+            notNull:false,       //是否需要判断空   true 不能为空  false 可以为空
+        }*/
+
+        var notNull = true;
+
+        var msg = obj.msg;
+
+        var alertHtml =  `<div sytle="padding:0.5rem 1rem;background:red;border:0.1rem solid red;border-roudes:0.2rem;${this.style}">${msg}<div>`;    //提示框html代码
+        
+        if(obj.notNull!=undefined){     //判断赋值可选内容
+
+            notNull = obj.notNull;
+        }
+
+        var regArr = [          //默认正则表达式条件组
+            {
+                reg:/^\w{6,16}$/,
+                name:'userid'
+            },{
+                reg:/^\w[0-9]{6,16}$/,
+                name:'password'
+            }
+        ];
+
+        var jquery = this;          //获取当前对象
+
+        var regular = obj.regular;  //获取正则表达式
+        
+        if(regular){               //判断增则表达式存在
+            
+            for(var index in regArr){               //遍历条件组
+
+                if(regArr[index].name==regular){    //匹配默认条件 匹配值name
+                    //匹配成功 按照条件组中的值进行比对
+                    testReg(regArr[index].regular);
+                }
+
+            }
+
+        }else{                      //没有正则表达式
+
+        }
+
+        //参数比对正则表达式
+        function testReg(regular){
+
+        var value = jquery.val();    //获取表单元素中的参数
+
+
+        if(value){      //判断数据是否不为空
+
+        }else{
+
+            if(notNull){       //不允许为空
+            
+                if(!value.length){  //数据为空
+                    showAlert('数据不能为空');
+                    return false;
+                }
+            }
+            //判断数据是否规范
+            if(regular.test(value)){  //规范
+
+            }else{  //不规范
+
+            }
+
+        }
+        }
+
+        //显示提示框
+        function showAlert(text){
+
+        }
+
+        //删除提示框
+        function delAlert(){
+
+        }
+    }
+
+}
+
+
 
 var register = function register(){
 
