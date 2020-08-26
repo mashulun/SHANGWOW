@@ -1,111 +1,118 @@
 
 
 //project name qiao-register.js
+//obj   或者多个表单元素数组
+//$.formel.bind(obj)
+
+//$.formel.bind()       带单个表单元素数据包
+//$.formel.testAll()    无参数 返回所有结果
 
 
 var formel = {
    
-    data:null,
+    data:[],
 
-    style:"",
+    formData:[],
 
-    alertEl:"",     //显示提示内容的元素
+
+    regArr:[          //默认正则表达式条件组
+        {
+            reg:/^\w{6,16}$/,
+            name:'userid'
+        },{
+            reg:/^\w[0-9]{6,16}$/,
+            name:'password'
+        }
+    ],
+    
    
     //绑定表单元素
-    bind:function(obj,alertEl=false){
+    //返回单个检测结果
+    bind:function(obj){
     //obj 参数的格式
         /*{
+            el:"#id"
             regular:正则表达式,
-            msg:"判断结果的提示字符串"
+            msg:"判断结果的提示字符串"          
+            msgel:"#text"       提示错误信息的位置  选填
             notNull:false,       //是否需要判断空   true 不能为空  false 可以为空
+
         }*/
-        var formel = this;  //获取当前对象
-
-        formel.alertEl = alertEl;
-
-        var msg = obj.msg;        
         
-
-        var regular = obj.regular;  //获取正则表达式
-        
-        var regArr = [          //默认正则表达式条件组
-            {
-                reg:/^\w{6,16}$/,
-                name:'userid'
-            },{
-                reg:/^\w[0-9]{6,16}$/,
-                name:'password'
-            }
-        ];
+        var formItem = obj;
 
         start();
         
         //入口方法
+        //处理obj对象 将数据添加到全局
         function start(){
             
+            formItem.el = "#"+formItem.el;
+
+            formItem.static = parsingData(formItem);    //判断数据包格式是否正确
             
-                //这里是异步事件
+            var key = formData.length;
 
-                if(isArray(obj)){//数据为数组时为多条数据同时导入
+            formData.push(formItem);     //添加到所有数据中
 
-                    jquery.blur(function(){   //表单元素失去焦点时触发事件
+            if(formItem.static){    //进行正则表达式比对
+                
+                if(testReg(formItem) == "lack false"){      //数据不能为空提示
 
-                        for(var key in obj){    //遍历数组对象   获取单个元素对象
-        
-                            var res = parsingData(obj[key]);  //解析数据
-                            
-                            //对数据组进行打包  打包号的数据放在data里面
+                    showAlert(formItem,'表单信息不能为空');
 
-                        }
+                    formData[key].testStatic = false;
 
-                     });    //获取表单元素中的参数
+                }else if(testReg(formItem) == false){       //调出错误信息
 
-    
-                }else if(isObject(obj)){//数据为对象时导入单条数据
-    
-                    var res = parsingData(obj);   //解析数据
-                    
-                }                                      
+                    showAlert(formItem);
 
+                    formData[key].testStatic = false;
+
+                }else{                   //数据完全合法
+
+                    formData[key].testStatic = true;
+
+                    formData[key].value = $(formData[key]).val();   //添加数据
+
+                }
+            
+            }
+            return formData[key];
 
         }
 
+
+ 
+
           //判断是否为数组
         function isArray(obj) {
+
             return obj instanceof Array;
+
         }
 
         //判断是否为对象
         function isObject(obj) {
+
             return obj instanceof Object;
+
         }
 
         //解析数据
+        //data  单个表单元素的整体数据
+        //判断数据格式是否有错误
         function parsingData(data){
             
-            var notNull = true;             //默认是不能为空的
-
-            if(data.notNull!=undefined){     //表单元素中的内容不能为空
-
-                notNull = data.notNull;
-            
-            }
-    
-
             if(data.regular){               //判断增则表达式存在
                 
-                for(var index in regArr){               //遍历条件组
-    
-                    if(regArr[index].name==data.regular){    //匹配默认条件 匹配值name
-                        //匹配成功 按照条件组中的值进行比对
-                        return testReg(regArr[index].regular,notNull);
-                    }
-                }
-    
+                return true;
+                
             }else{                      //没有正则表达式
                 //直接判定为比对错误    给一个特殊提示
                 return false;
             }
+
         }
 
 
@@ -113,22 +120,25 @@ var formel = {
 
         //参数比对正则表达式
         //返回表单元素值和比对状态
-        function testReg(regular,notNull){
+        function testReg(item){
 
-            var value = jquery.val();
+            
+            var value = $(item.el).val();
                
-            if(value){      //判断数据是否不为空
-
-            }else{
+            if(!value){        
+                     //数据为空
 
                 if(notNull){       //不允许为空
                     
                     if(value.length==0){  //数据为空
+
                         //比对失败
                         //在这里返回结果
                         return "lack false";
                     }
+
                 }else{      //允许为空
+
                     if(value.length==0){ //数据为空 
                         //比对成功
                         //在这里返回结果
@@ -136,64 +146,55 @@ var formel = {
                     }
                 }
 
-                //判断数据是否规范
-                if(regular.test(value)){  //规范
-                    return true;
-                }else{  //不规范
-                    return false;
-                }
-
+            }
+            
+            //判断数据是否规范
+            if(regular.test(value)){  //规范
+                return true;
+            }else{  //不规范
+                return false;
             }
 
         }
 
         //显示提示框
-        function showAlert(text){
+        function showAlert(val){
 
         }
 
         //删除提示框
-        function delAlert(){
+        function delAlert(val){
 
         }
+    },
+    //返回所有检测结构
+    testAll:function(){
+        var data = [];
+        for(key in formData){   //遍历已经处理过的数据
+            
+            if(formData[key].static && formData.testStatic){
+                //添加验证成功数据
+                data.push({
+                    el:this.formData[key].el,
+                    value:this.formData[key].value,
+                    static:true
+                })    
+
+            }else{
+                //添加验证失败数据
+                data.push({
+                    el:this.formData[key].el,
+                    static:true
+                })   
+
+            }
+        }
+
+        return data;
+
     }
 
 }
 
 
 
-
-
-
-$(document).ready(function(){
-//点击提交按钮触发事件
-    formArea([{
-        id:"username",
-        regular:/^\w{6,16}$/,
-        error:"用户名格式错误",
-        //errorPath:"this is errorpath"
-    },{ 
-        id:"phone",
-        regular:/^1[345678]\d{9}$/,
-        error:"手机号格式错误"
-    },{ 
-        id:"verificationcode",
-        regular:/^[0-9]{6}$/,
-        error:"验证码错误"
-    },{ 
-        id:"password",
-        regular:/^\w[0-9]{6,16}$/,
-        error:"密码格式错误"
-    },{ 
-        id:"passwordagain",
-        regular:/^\w[0-9]{6,16}$/,
-        error:"密码格式错误"
-    },{ 
-        id:"email",
-        regular:/^\w[0-9]{6,32}$/,
-        error:"邮箱格式错误"
-    }]);
-    $("#regbtn").click(function(){
-        testAll();
-    });
-})
